@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Produtos</title>
+</head>
+<style>
+        @charset "UTF-8";
+
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    body{
+        background-color: lightgray;
+    }
+    h1{
+        text-align: center;
+        color: white;
+    }
+    header{
+        background-color: rgb(70, 70, 70);
+    }
+    main.formularios_controle{
+        background-color: white;
+        width: auto;
+        max-width: 900px;
+        margin: auto;
+        padding: 2em 1em 2em 1em;
+    }
+
+    section{
+        margin: 0em 0px 2em 0px;
+    }
+
+    form{
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    input{
+        height: 3em;
+    }
+    input[type="submit"]{
+        width: 10em;
+    }
+    form#form_listar_produto{
+        justify-content: center;
+    }
+
+    input#id_produto_consultar, input#id_produto_delete{
+        width: calc(100% - 13em);
+    }
+</style>
+<body>
+    <header>
+        <h1>Controle de Estoque</h1>
+    </header>
+    <main class="formularios_controle">
+        <section class="section_excluir">
+            <form onsubmit ="actionverifyredirect(event, 'form_deletar_produto', 'http://localhost:6789/produto/delete/')" method="get" id="form_deletar_produto">
+                <input type="number" name="id" id="id_produto_delete" placeholder="ID">
+                <input type="submit" value="Excluir">
+            </form>
+        </section>
+        <section class="section_consultar">
+            <form onsubmit ="actionverifyredirect(event, 'form_consultar_produto', 'http://localhost:6789/produto/')" method="get" id="form_consultar_produto">
+                <input type="number" name="id" id="id_produto_consultar" placeholder="ID">
+                <input type="submit" value="Consultar">
+            </form>
+        </section>
+        <section class="section_listar">
+            <form action="http://localhost:6789/produto" method="get" id="form_listar_produto">
+                <input type="submit" value="Listar Produtos">
+            </form>
+        </section>
+        <section class="section_adicionar">
+            <form action="http://localhost:6789/produto" method="post">
+                <input type="text" name="nomeproduto" id="input_nome_produto"placeholder="Nome do Produto">
+                <input type="number" name="valor" id="input_valor_produto" placeholder="Valor do Produto" step="0.01">
+                <input type="number" name="quantidade" id="input_quantidade_produto" placeholder="Quantidade do Produto">
+                <input type="submit" value="Inserir">
+            </form>
+        </section>
+        <section class="section_atualizar">
+            <form onsubmit ="actionverifyredirect(event, 'form_atualizar_produto', 'http://localhost:6789/produto/update/')" method="get" id="form_atualizar_produto">
+                <input type="number" name="id" id="input_id_produto" placeholder="ID">
+                <input type="text" name="nomeproduto" id="input_nome_produto" placeholder="Nome do Produto">
+                <input type="number" name="valor" id="input_valor_produto" placeholder="Valor do Produto" step="0.01">
+                <input type="number" name="quantidade" id="input_quantidade_produto" placeholder="Quantidade do Produto">
+                <input type="submit" value="Atualizar">
+            </form>
+        </section>
+        <p class="alerta"></p>
+    </main>
+</body>
+<script>
+    function actionverifyredirect(event, id_form, link_form){
+        let form_atual = document.getElementById(id_form);
+        let id_inserido = form_atual.elements.namedItem("id").value;
+        let caixa_alerta = document.querySelector("p.alerta");
+        if(id_inserido != ""){
+            let action_string = link_form + id_inserido;
+            form_atual.action = action_string;
+            caixa_alerta.innerHTML = "";
+        } else {
+            event.preventDefault();
+            caixa_alerta.innerHTML = "<span>Insira o ID do produto</span>"
+        }
+    }
+</script>
+</html>
